@@ -1,0 +1,8 @@
+name: xBrick
+author: N137
+main: me.N137.xBrick.xBrick
+version: 1.12.2
+
+commands:
+  xbrick:
+    description: Main command
