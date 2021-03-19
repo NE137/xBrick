@@ -54,32 +54,46 @@ public class xBrick extends JavaPlugin implements Listener {
         if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
             Player victim = (Player) event.getEntity();
             Player perpetrator = (Player) event.getDamager();
+
             if (perpetrator.getInventory().getItemInMainHand().getType().equals(Material.CLAY_BRICK)) {
                 if (victim.hasPermission("xbrick.immune")) { return; }
                 if (victim.hasPotionEffect(PotionEffectType.WEAKNESS)) {
                     event.setCancelled(true);
                     return;
                 }
-                PotionEffectType type;
-                PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, 200, 1);
-                PotionEffect weaknesses = new PotionEffect(PotionEffectType.WEAKNESS, 200, 1);
-                PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, 200 , 128);
-                PotionEffect jumpboost = new PotionEffect(PotionEffectType.JUMP, 200,128);
 
-                victim.addPotionEffect(blindness);
-                victim.addPotionEffect(weaknesses);
-                victim.addPotionEffect(slowness);
-                victim.addPotionEffect(jumpboost);
+                Double knockoutChance = Math.random();
+                if (knockoutChance > 0.6) {
+                    PotionEffectType type;
+                    PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, 200, 1);
+                    PotionEffect weaknesses = new PotionEffect(PotionEffectType.WEAKNESS, 200, 1);
+                    PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, 200 , 128);
+                    PotionEffect jumpboost = new PotionEffect(PotionEffectType.JUMP, 200,128);
 
+                    victim.addPotionEffect(blindness);
+                    victim.addPotionEffect(weaknesses);
+                    victim.addPotionEffect(slowness);
+                    victim.addPotionEffect(jumpboost);
+
+                    victim.sendMessage("");
+                    victim.sendMessage("                          §2§nYou have been knocked out!");
+                    victim.sendMessage("");
+
+                    perpetrator.sendMessage("");
+                    perpetrator.sendMessage("                     §2§nYou have knocked out " + victim.getName());
+                    perpetrator.sendMessage("");
+
+                } else {
+                    victim.sendMessage("");
+                    victim.sendMessage("                          §c§n"+perpetrator.getName()+" tried to knock you out with a brick but you remained conscious!");
+                    victim.sendMessage("");
+
+                    perpetrator.sendMessage("");
+                    perpetrator.sendMessage("                     §c§nYou have tried to knocked out " + victim.getName() + " with a brick but they remained conscious");
+                    perpetrator.sendMessage("");
+                }
                 perpetrator.getInventory().getItemInMainHand().setAmount(perpetrator.getInventory().getItemInMainHand().getAmount() - 1);
 
-                victim.sendMessage("");
-                victim.sendMessage("                          §2§nYou have been knocked out!");
-                victim.sendMessage("");
-
-                perpetrator.sendMessage("");
-                perpetrator.sendMessage("                     §2§nYou have knocked out " + victim.getName());
-                perpetrator.sendMessage("");
 
             }
         }
