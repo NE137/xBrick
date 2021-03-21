@@ -64,34 +64,34 @@ public class xBrick extends JavaPlugin implements Listener {
 
                 Double knockoutChance = Math.random();
                 if (knockoutChance > 0.6) {
-                    PotionEffectType type;
-                    PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, 200, 1);
-                    PotionEffect weaknesses = new PotionEffect(PotionEffectType.WEAKNESS, 200, 1);
-                    PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, 200 , 128);
-                    PotionEffect jumpboost = new PotionEffect(PotionEffectType.JUMP, 200,128);
+                    Double severity = Math.random();
 
-                    victim.addPotionEffect(blindness);
-                    victim.addPotionEffect(weaknesses);
-                    victim.addPotionEffect(slowness);
-                    victim.addPotionEffect(jumpboost);
-
-                    victim.sendMessage("");
-                    victim.sendMessage("                          §2§nYou have been knocked out!");
-                    victim.sendMessage("");
-
-                    perpetrator.sendMessage("");
-                    perpetrator.sendMessage("                     §2§nYou have knocked out " + victim.getName());
-                    perpetrator.sendMessage("");
+                    if (severity < 0.6)  {    // 0 -> 6
+                        knockout(perpetrator, victim,
+                                true, false, true, true, false,
+                                1, 0, 3, 3, 0);
+                    } else if (severity > 0.6 && severity < 0.8) {
+                        knockout(perpetrator, victim,
+                                true, true, true, true, false,
+                                10, 10, 10, 10, 0);
+                    } else {
+                        knockout(perpetrator, victim,
+                                true, true, true, true, true,
+                                15, 15, 15, 15, 10);
+                    }
 
                 } else {
                     victim.sendMessage("");
-                    victim.sendMessage("                          §c§n"+perpetrator.getName()+" tried to knock you out with a brick but you remained conscious!");
+                    victim.sendMessage("      §c"+perpetrator.getName()+" tried to knock you out with a brick");
+                    victim.sendMessage("      §cbut you remained conscious!");
                     victim.sendMessage("");
 
                     perpetrator.sendMessage("");
-                    perpetrator.sendMessage("                     §c§nYou have tried to knocked out " + victim.getName() + " with a brick but they remained conscious");
+                    perpetrator.sendMessage("      §cYou have tried to knocked out " + victim.getName() + " with a brick");
+                    perpetrator.sendMessage("      §cbut they remained conscious");
                     perpetrator.sendMessage("");
                 }
+
                 perpetrator.getInventory().getItemInMainHand().setAmount(perpetrator.getInventory().getItemInMainHand().getAmount() - 1);
 
 
@@ -99,6 +99,32 @@ public class xBrick extends JavaPlugin implements Listener {
         }
 
     }
+
+    public void knockout(Player perpetrator, Player victim,
+      boolean applyBlindness, boolean applyWeakness, boolean applySlowness, boolean applyJumpboost, boolean applyConfusion,
+      int blindnessDuration, int weaknessDuration, int slownessDuration, int jumpboostDuration, int confusionDuration) {
+
+        PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, blindnessDuration*20, 1);
+        PotionEffect weaknesses = new PotionEffect(PotionEffectType.WEAKNESS, weaknessDuration*20, 1);
+        PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, slownessDuration*20 , 128);
+        PotionEffect jumpboost = new PotionEffect(PotionEffectType.JUMP, jumpboostDuration*20,128);
+        PotionEffect confusion = new PotionEffect(PotionEffectType.CONFUSION, confusionDuration*20, 1);
+
+       if (applyBlindness) victim.addPotionEffect(blindness);
+       if (applyWeakness) victim.addPotionEffect(weaknesses);
+       if (applySlowness) victim.addPotionEffect(slowness);
+       if (applyJumpboost) victim.addPotionEffect(jumpboost);
+       if (applyConfusion) victim.addPotionEffect(confusion);
+
+        victim.sendMessage("");
+        victim.sendMessage("      §2§nYou have been knocked out!");
+        victim.sendMessage("");
+
+        perpetrator.sendMessage("");
+        perpetrator.sendMessage("      §2§nYou have knocked out " + victim.getName());
+        perpetrator.sendMessage("");
+    }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
