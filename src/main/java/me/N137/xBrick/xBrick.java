@@ -63,7 +63,7 @@ public class xBrick extends JavaPlugin implements Listener {
                 }
 
                 Double knockoutChance = Math.random();
-                if (knockoutChance > 0.6) {
+                if (knockoutChance > 0.8) {
                     Double severity = Math.random();
 
                     if (severity < 0.6)  {    // 0 -> 6
