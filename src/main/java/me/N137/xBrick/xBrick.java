@@ -55,7 +55,7 @@ public class xBrick extends JavaPlugin implements Listener {
             Player victim = (Player) event.getEntity();
             Player perpetrator = (Player) event.getDamager();
 
-            if (perpetrator.getInventory().getItemInMainHand().getType().equals(Material.CLAY_BRICK)) {
+            if (perpetrator.getInventory().getItemInMainHand().getType().equals(Material.BRICK)) {
                 if (victim.hasPermission("xbrick.immune")) { return; }
                 if (victim.hasPotionEffect(PotionEffectType.WEAKNESS)) {
                     event.setCancelled(true);
