@@ -22,28 +22,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class xBrick extends JavaPlugin implements Listener {
-    public UUID developerUUID = UUID.fromString("c8984808-54ca-4a6a-a3cd-b518af0df4f7");
-    public String developerName = null;
 
+    public String developerName = "N137";
 
-    public String resolveUsername(String UUIDString) {
-        String url = "https://api.mojang.com/user/profiles/"+UUIDString.replace("-", "")+"/names";
-        try {
-            @SuppressWarnings("deprecation")
-            String nameJson = IOUtils.toString(new URL(url));
-            JSONArray nameValue = (JSONArray) JSONValue.parseWithException(nameJson);
-            String playerSlot = nameValue.get(nameValue.size()-1).toString();
-            JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
-            return nameObject.get("name").toString();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-        return "N137";
-    }
 
     @Override
     public void onEnable() {
-        this.developerName = resolveUsername(developerUUID.toString());
         this.getServer().getPluginManager().registerEvents(this, this);
         Objects.requireNonNull(getCommand("xbrick")).setExecutor(this);
         this.getServer().getConsoleSender().sendMessage("xBrick developer by " + developerName + " has been enabled.");
